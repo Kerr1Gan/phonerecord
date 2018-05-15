@@ -10,13 +10,11 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
-
 import org.ecjtu.phonerecord.RecorderFormat;
 import org.ecjtu.phonerecord.media.MediaAudioEncoder;
 import org.ecjtu.phonerecord.media.MediaEncoder;
 import org.ecjtu.phonerecord.media.MediaMuxerWrapper;
 import org.ecjtu.phonerecord.media.MediaScreenEncoder;
-
 import java.io.IOException;
 
 
