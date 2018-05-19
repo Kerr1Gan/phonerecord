@@ -31,7 +31,7 @@ public abstract class MediaVideoEncoderBase extends MediaEncoder {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    protected Surface prepare_surface_encoder(final String mime, final int frame_rate)
+    protected Surface prepareSurfaceEncoder(final String mime, final int frame_rate)
             throws IOException, IllegalArgumentException {
 
         mTrackIndex = -1;

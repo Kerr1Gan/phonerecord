@@ -14,8 +14,16 @@
             android:name=".RecordExampleActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".RecordBinderExampleActivity"
+            android:exported="true" />
+
         <service
             android:name=".service.ScreenRecorderService"
+            android:process=":record_service" />
+
+        <service
+            android:name=".service.ScreenRecorderBinderService"
             android:process=":record_service" />
     </application>
 

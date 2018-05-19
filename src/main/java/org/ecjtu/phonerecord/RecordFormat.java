@@ -6,17 +6,17 @@ import android.os.Parcelable;
 /**
  * Created by Ethan_Xiang on 2018/5/15.
  */
-public final class RecorderFormat implements Parcelable {
+public class RecordFormat implements Parcelable {
 
     private boolean recordAudio = true;
     private boolean recordVideo = true;
     private int videoWidth = -1;
     private int videoHeight = -1;
 
-    public RecorderFormat() {
+    public RecordFormat() {
     }
 
-    protected RecorderFormat(Parcel in) {
+    protected RecordFormat(Parcel in) {
         recordAudio = in.readByte() != 0;
         recordVideo = in.readByte() != 0;
         videoWidth = in.readInt();
@@ -55,15 +55,15 @@ public final class RecorderFormat implements Parcelable {
         this.videoHeight = videoHeight;
     }
 
-    public static final Creator<RecorderFormat> CREATOR = new Creator<RecorderFormat>() {
+    public static final Creator<RecordFormat> CREATOR = new Creator<RecordFormat>() {
         @Override
-        public RecorderFormat createFromParcel(Parcel in) {
-            return new RecorderFormat(in);
+        public RecordFormat createFromParcel(Parcel in) {
+            return new RecordFormat(in);
         }
 
         @Override
-        public RecorderFormat[] newArray(int size) {
-            return new RecorderFormat[size];
+        public RecordFormat[] newArray(int size) {
+            return new RecordFormat[size];
         }
     };
 

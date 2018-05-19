@@ -57,7 +57,7 @@ public class MediaScreenEncoder extends MediaVideoEncoderBase {
     @Override
     void prepare() throws IOException {
         if (DEBUG) Log.i(TAG, "prepare: ");
-        mSurface = prepare_surface_encoder(MIME_TYPE, FRAME_RATE);
+        mSurface = prepareSurfaceEncoder(MIME_TYPE, FRAME_RATE);
         mMediaCodec.start();
         mIsCapturing = true;
         new Thread(mScreenCaptureTask, "ScreenCaptureThread").start();

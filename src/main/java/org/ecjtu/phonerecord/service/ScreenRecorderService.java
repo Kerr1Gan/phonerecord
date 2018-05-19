@@ -10,7 +10,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import org.ecjtu.phonerecord.RecorderFormat;
+import org.ecjtu.phonerecord.RecordFormat;
 import org.ecjtu.phonerecord.media.MediaAudioEncoder;
 import org.ecjtu.phonerecord.media.MediaEncoder;
 import org.ecjtu.phonerecord.media.MediaMuxerWrapper;
@@ -136,10 +136,10 @@ public class ScreenRecorderService extends IntentService {
                             sMuxer.setOutputPath(intent.getStringExtra(EXTRA_SET_OUTPUT_PATH), true);
                         }
 
-                        RecorderFormat recorderFormat = null;
+                        RecordFormat recorderFormat = null;
                         Parcelable parcelable = intent.getParcelableExtra(EXTRA_SET_RECORDER_FORMAT);
-                        if (parcelable != null && parcelable instanceof RecorderFormat) {
-                            recorderFormat = (RecorderFormat) parcelable;
+                        if (parcelable != null && parcelable instanceof RecordFormat) {
+                            recorderFormat = (RecordFormat) parcelable;
                         }
 
                         if (recorderFormat == null || recorderFormat.isRecordVideo()) {
@@ -230,10 +230,10 @@ public class ScreenRecorderService extends IntentService {
             final DisplayMetrics metrics = getResources().getDisplayMetrics();
             final int density = metrics.densityDpi;
 
-            RecorderFormat recorderFormat = null;
+            RecordFormat recorderFormat = null;
             Parcelable parcelable = intent.getParcelableExtra(EXTRA_SET_RECORDER_FORMAT);
-            if (parcelable != null && parcelable instanceof RecorderFormat) {
-                recorderFormat = (RecorderFormat) parcelable;
+            if (parcelable != null && parcelable instanceof RecordFormat) {
+                recorderFormat = (RecordFormat) parcelable;
             }
 
             if (recorderFormat == null || recorderFormat.isRecordVideo()) {
