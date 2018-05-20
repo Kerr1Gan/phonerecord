@@ -215,7 +215,7 @@ public abstract class MediaEncoder implements Runnable {
             if (!mIsCapturing || mRequestStop) {
                 return;
             }
-            offsetPTSUs = System.nanoTime() / 1000 - mLastPausedTimeUs;
+            offsetPTSUs += System.nanoTime() / 1000 - mLastPausedTimeUs;
             mRequestPause = false;
             mSync.notifyAll();
         }
