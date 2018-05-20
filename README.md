@@ -15,6 +15,7 @@
 3. OpenGL
 
 使用下面代码进入用来测试的Activity进行测试
+
 通过Intent调用
 ```java
 Intent intent = new Intent(context,RecordExampleActivity.class);
