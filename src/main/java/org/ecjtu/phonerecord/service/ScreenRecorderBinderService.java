@@ -54,6 +54,10 @@ public class ScreenRecorderBinderService extends Service {
     private Object mSync = new Object();
     private MediaMuxerWrapper mMuxer;
 
+    private long mPausedTime;
+    private long mTimeOffset;
+    private long mStartTime;
+
     @Override
     public IBinder onBind(Intent intent) {
         Log.i(TAG, "onBind " + intent.toString());
@@ -145,10 +149,12 @@ public class ScreenRecorderBinderService extends Service {
                         }
                         mMuxer.prepare();
                         mMuxer.startRecording();
+                        mStartTime = System.nanoTime() / 1000;
 
                         callRecordStatusChanged(getRecordStatus());
                     } catch (final IOException e) {
                         Log.e(TAG, "startScreenRecord:", e);
+                        callErrorMsg(e.toString());
                     }
                 }
             }
@@ -174,6 +180,7 @@ public class ScreenRecorderBinderService extends Service {
         synchronized (mSync) {
             if (mMuxer != null) {
                 mMuxer.pauseRecording();
+                mPausedTime = System.nanoTime() / 1000;
             }
         }
         callRecordStatusChanged(getRecordStatus());
@@ -181,8 +188,13 @@ public class ScreenRecorderBinderService extends Service {
 
     private void resumeScreenRecord() {
         synchronized (mSync) {
+            if (!getRecordStatus().isPausing()) {
+                return;
+            }
             if (mMuxer != null) {
                 mMuxer.resumeRecording();
+                mTimeOffset += System.nanoTime() / 1000 - mPausedTime;
+                mPausedTime = 0;
             }
         }
         callRecordStatusChanged(getRecordStatus());
@@ -193,6 +205,30 @@ public class ScreenRecorderBinderService extends Service {
         try {
             for (int i = 0; i < N; i++) {
                 mCallbacks.getBroadcastItem(i).onStateChanged(status);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        mCallbacks.finishBroadcast();
+    }
+
+    public void callRecordTimeChanged(RecordStatus status) {
+        int N = mCallbacks.beginBroadcast();
+        try {
+            for (int i = 0; i < N; i++) {
+                mCallbacks.getBroadcastItem(i).onRecordTimeChanged(status.getRecordTime());
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        mCallbacks.finishBroadcast();
+    }
+
+    public void callErrorMsg(String msg) {
+        int N = mCallbacks.beginBroadcast();
+        try {
+            for (int i = 0; i < N; i++) {
+                mCallbacks.getBroadcastItem(i).onError(msg);
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -234,7 +270,6 @@ public class ScreenRecorderBinderService extends Service {
         if (mRecordStatus == null) {
             mRecordStatus = new RecordStatus();
         }
-        if (mMuxer == null) return mRecordStatus;
         final boolean isRecording, isPausing;
         synchronized (mSync) {
             isRecording = (mMuxer != null);
@@ -242,7 +277,7 @@ public class ScreenRecorderBinderService extends Service {
         }
         mRecordStatus.setPausing(isPausing);
         mRecordStatus.setRecording(isRecording);
-        mRecordStatus.setRecordTime(0);
+        mRecordStatus.setRecordTime(System.nanoTime() / 1000 - mStartTime - mTimeOffset);
         return mRecordStatus;
     }
 

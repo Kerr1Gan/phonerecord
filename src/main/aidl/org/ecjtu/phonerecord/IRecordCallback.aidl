@@ -9,4 +9,5 @@ interface IRecordCallback {
      */
     void onStateChanged(in RecordStatus recordStatus);
     void onRecordTimeChanged(long time);
+    void onError(String msg);
 }

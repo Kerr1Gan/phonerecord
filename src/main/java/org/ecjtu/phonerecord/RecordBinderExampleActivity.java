@@ -78,7 +78,7 @@ public class RecordBinderExampleActivity extends Activity {
             public void onClick(View v) {
                 if (mRecordService == null) return;
                 try {
-                    Toast.makeText(RecordBinderExampleActivity.this, "output path " + mRecordService.getOutputPath(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecordBinderExampleActivity.this, "output path " + mRecordService.getOutputPath() + " record time " + mRecordService.getRecordStatus().getRecordTime(), Toast.LENGTH_SHORT).show();
                     mRecordService.stopScreenRecord();
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -98,7 +98,7 @@ public class RecordBinderExampleActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if(mRecordService!=null){
+        if (mRecordService != null) {
             try {
                 mRecordService.stopScreenRecord();
                 mRecordService.releaseResource();
@@ -142,7 +142,11 @@ public class RecordBinderExampleActivity extends Activity {
 
                     @Override
                     public void onRecordTimeChanged(long time) throws RemoteException {
+                    }
 
+                    @Override
+                    public void onError(String msg) throws RemoteException {
+                        Toast.makeText(RecordBinderExampleActivity.this, "error " + msg, Toast.LENGTH_SHORT).show();
                     }
                 });
             } catch (RemoteException e) {
